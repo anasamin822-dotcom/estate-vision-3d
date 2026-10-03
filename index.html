@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function() {
+      const theme = localStorage.getItem('estatevision-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EstateVision 3D - Next-Gen Interactive Luxury Real Estate Landing Page with 3D Spatial Walkthroughs, Dynamic Property Filtering, and Real-Time Financial Calculators.">
+  <title>EstateVision 3D | Next-Gen Luxury Real Estate</title>
+
+  <!-- External Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <!-- Design System & Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- Core 3D & Animation Libraries (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Modular Application Scripts -->
+  <script defer src="js/three-scene.js"></script>
+  <script defer src="js/calculator.js"></script>
+  <script defer src="js/filter.js"></script>
+  <script defer src="js/animation.js"></script>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <!-- Ambient Liquid Canvas Overlay -->
+  <div class="ambient-glow-mesh" id="ambientGlowMesh"></div>
+
+  <!-- Main Navigation -->
+  <header class="site-header" id="siteHeader">
+    <div class="nav-container">
+      <a href="#hero" class="brand-logo" id="brandLogo">
+        <span class="brand-glyph">
+          <i class="fa-solid fa-cube"></i>
+        </span>
+        <div class="brand-text">
+          <span class="brand-title">ESTATE<span class="text-gold">VISION</span></span>
+          <span class="brand-subtitle">3D Spatial Living</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#hero" class="nav-link active">Home</a></li>
+          <li class="nav-item"><a href="#architecture" class="nav-link">Architecture</a></li>
+          <li class="nav-item"><a href="#properties" class="nav-link">Properties</a></li>
+          <li class="nav-item"><a href="#calculator" class="nav-link">Mortgage</a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link">Consultation</a></li>
+
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="engine-badge" id="engineStatusBadge" aria-label="3D Engine Status: Active">
+          <span class="pulse-indicator"></span>
+          <span class="engine-label">3D Engine Live</span>
+        </div>
+        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Light and Dark Mode" title="Toggle Light / Dark Mode">
+          <i class="fa-solid fa-moon theme-icon-dark"></i>
+          <i class="fa-solid fa-sun theme-icon-light"></i>
+        </button>
+        <button type="button" class="btn btn-primary" id="openBookingBtn">
+          <span>Book Viewing</span>
+          <i class="fa-solid fa-arrow-right-long"></i>
+        </button>
+        <button type="button" class="mobile-toggle" id="mobileMenuToggle" aria-label="Toggle Navigation Menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-content">
+    <!-- Hero Section with 3D Spatial Canvas -->
+    <section class="section hero-section" id="hero">
+      <div class="hero-split-container">
+        <div class="hero-narrative">
+          <span class="section-tag section-tag--sentence"><i class="fa-solid fa-gem" style="margin-right: 0.35rem;"></i> Ultra-Luxury Architectural Showcase</span>
+          <h1 class="hero-title" id="heroHeadline">
+            Experience Architecture in <span class="gradient-text-gold">True 3D Space</span>
+          </h1>
+          <p class="hero-description">
+            Step beyond static blueprints. Explore world-class architectural sanctuaries with real-time 360° WebGL rendering, spatial daylight simulation, and precision engineering.
+          </p>
+          <div class="hero-cta-group">
+            <a href="#properties" class="btn btn-primary btn-lg">
+              <span>Explore Residences</span>
+              <i class="fa-solid fa-compass"></i>
+            </a>
+            <button type="button" class="btn btn-secondary btn-lg" id="reset3DCameraBtn">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>Reset 3D Angle</span>
+            </button>
+          </div>
+
+          <div class="hero-metrics-strip">
+            <div class="metric-card">
+              <span class="metric-number" data-count="1.4">$1.4B+</span>
+              <span class="metric-label">Curated Assets</span>
+            </div>
+            <div class="metric-divider"></div>
+            <div class="metric-card">
+              <span class="metric-number" data-count="100">100%</span>
+              <span class="metric-label">Spatial Fidelity</span>
+            </div>
+            <div class="metric-divider"></div>
+            <div class="metric-card">
+              <span class="metric-number" data-count="60">60 FPS</span>
+              <span class="metric-label">Fluid Rendering</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-viewport-wrapper">
+          <div class="viewport-frame" id="threeViewportFrame">
+            <!-- Three.js Canvas Injection Container -->
+            <div class="canvas-3d-stage" id="threeCanvasContainer"></div>
+
+            <!-- 3D Scene Controls HUD -->
+            <div class="viewport-hud">
+              <div class="hud-chip">
+                <i class="fa-solid fa-hand-pointer"></i>
+                <span>Drag to Rotate 360°</span>
+              </div>
+              <div class="hud-chip">
+                <i class="fa-solid fa-magnifying-glass-plus"></i>
+                <span>Pinch / Scroll to Zoom</span>
+              </div>
+              <div class="hud-actions">
+                <button type="button" class="hud-btn" id="toggleDayNightBtn" title="Toggle Day/Night Simulation" aria-label="Toggle Day and Night Lighting">
+                  <i class="fa-solid fa-moon"></i>
+                  <span class="hud-btn-label">Day/Night</span>
+                </button>
+                <button type="button" class="hud-btn" id="toggleWireframeBtn" title="Toggle Wireframe Architecture" aria-label="Toggle Wireframe Architecture">
+                  <i class="fa-solid fa-vector-square"></i>
+                  <span class="hud-btn-label">Wireframe</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- WebGL Loader State -->
+            <div class="scene-loader-overlay" id="sceneLoaderOverlay">
+              <div class="loader-spinner"></div>
+              <p class="loader-caption">Synthesizing 3D Architectural Geometry...</p>
+              <div class="loader-progress-track">
+                <div class="loader-progress-fill" id="modelProgressFill"></div>
+              </div>
+            </div>
+
+            <!-- Interactive 3D Hotspot Tags -->
+            <div class="hotspots-container" id="hotspotsContainer">
+              <button type="button" class="hotspot-pin" id="pinPool" data-spot="Infinity Horizon Pool">
+                <span class="pin-dot"></span>
+                <span class="pin-ripple"></span>
+                <span class="pin-tooltip">Infinity Horizon Pool</span>
+              </button>
+              <button type="button" class="hotspot-pin" id="pinTerrace" data-spot="Cantilevered Penthouse Terrace">
+                <span class="pin-dot"></span>
+                <span class="pin-ripple"></span>
+                <span class="pin-tooltip">Cantilevered Terrace</span>
+              </button>
+              <button type="button" class="hotspot-pin" id="pinSolar" data-spot="High-Yield Photovoltaic Canopy">
+                <span class="pin-dot"></span>
+                <span class="pin-ripple"></span>
+                <span class="pin-tooltip">Bioclimatic Solar Roof</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture & Spatial Specs Section -->
+    <section class="section architecture-section" id="architecture">
+      <div class="container">
+        <div class="section-header section-header--centered">
+          <span class="section-tag">Engineering Excellence</span>
+          <h2 class="section-title">
+            Crafted with Precision.<br><span class="text-gold">Engineered for Eternity.</span>
+          </h2>
+          <p class="section-subtitle">
+            Every millimeter of our curated portfolio combines aerospace-grade structural physics with ultra-refined bioclimatic architecture.
+          </p>
+        </div>
+
+        <div class="specs-grid">
+          <article class="spec-card">
+            <div class="spec-icon-wrap">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h3 class="spec-title">Monolithic Concrete & Titanium</h3>
+            <p class="spec-text">
+              Aerospace-grade titanium reinforcement and ultra-low carbon concrete alloys ensure acoustic isolation and century-long durability.
+            </p>
+            <div class="spec-meta">
+              <span>Seismic Category IV</span>
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-icon-wrap">
+              <i class="fa-solid fa-sun"></i>
+            </div>
+            <h3 class="spec-title">Passive Bioclimatic Envelope</h3>
+            <p class="spec-text">
+              Automated aerodynamic louvers and triple-glazed Low-E glass harmonize interior microclimates while consuming 68% less energy.
+            </p>
+            <div class="spec-meta">
+              <span>Net Zero Certified</span>
+              <i class="fa-solid fa-leaf"></i>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-icon-wrap">
+              <i class="fa-solid fa-microchip"></i>
+            </div>
+            <h3 class="spec-title">Autonomous Smart Living</h3>
+            <p class="spec-text">
+              Invisible biometric access, circadian lighting systems, and whole-residence ambient intelligence respond intuitively to your arrival.
+            </p>
+            <div class="spec-meta">
+              <span>Matter & KNX Native</span>
+              <i class="fa-solid fa-network-wired"></i>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Properties Showcase & Dynamic Filter Engine -->
+    <section class="section properties-section" id="properties">
+      <div class="container">
+        <div class="section-header section-header--centered">
+          <span class="section-tag">Curated Portfolio</span>
+          <h2 class="section-title">
+            Private Residences &amp; <span class="gradient-text-gold">Grand Estates</span>
+          </h2>
+          <p class="section-subtitle">
+            Explore exclusive verified listings across the world's most coveted prime locations.
+          </p>
+        </div>
+
+        <!-- Filter Controls Panel (Unified Grid) -->
+        <div class="filter-controls-panel">
+          <div class="filter-toolbar-grid">
+            <div class="filter-field-group field-search">
+              <label for="propertySearchInput">Keyword Search</label>
+              <div class="search-input-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="propertySearchInput" placeholder="Name, city, or landmark..." autocomplete="off">
+                <button type="button" class="search-clear-btn" id="searchClearBtn" title="Clear Search">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="filter-field-group">
+              <label for="filterLocationSelect">Location</label>
+              <select id="filterLocationSelect" class="filter-select">
+                <option value="all">All Global Locations</option>
+                <option value="Beverly Hills">Beverly Hills, CA</option>
+                <option value="Manhattan">Manhattan, NY</option>
+                <option value="Dubai Marina">Dubai Marina, UAE</option>
+                <option value="Swiss Alps">Swiss Alps, Switzerland</option>
+                <option value="Miami Beach">Miami Beach, FL</option>
+              </select>
+            </div>
+
+            <div class="filter-field-group">
+              <label for="filterBhkSelect">Configuration</label>
+              <select id="filterBhkSelect" class="filter-select">
+                <option value="all">All Configurations</option>
+                <option value="2 BHK">2 Bedroom Suite</option>
+                <option value="3 BHK">3 Bedroom Residence</option>
+                <option value="4 BHK Penthouse">4 Bedroom Penthouse</option>
+                <option value="Luxury Villa">Private Luxury Villa</option>
+              </select>
+            </div>
+
+            <div class="filter-field-group">
+              <label for="filterPriceSelect">Price Bracket</label>
+              <select id="filterPriceSelect" class="filter-select">
+                <option value="all">All Price Ranges</option>
+                <option value="under-5m">Under $5M</option>
+                <option value="5m-15m">$5M - $15M</option>
+                <option value="15m-plus">$15M+</option>
+              </select>
+            </div>
+
+            <div class="filter-field-group field-reset">
+              <span class="filter-label-spacer" aria-hidden="true">&nbsp;</span>
+              <button type="button" class="btn btn-outline" id="resetFiltersBtn">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Reset Filters</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-results-status">
+            <span id="resultsCountLabel">Showing all listings</span>
+            <div class="filter-tags" id="activeFilterTags"></div>
+          </div>
+        </div>
+
+        <!-- Dynamic Property Cards Grid Container -->
+        <div class="properties-grid" id="propertiesGrid">
+          <!-- Dynamically populated via filter.js -->
+        </div>
+
+        <!-- Empty Results State -->
+        <div class="empty-state-card" id="emptyResultsNotice">
+          <div class="empty-icon-wrap">
+            <i class="fa-solid fa-building-circle-xmark"></i>
+          </div>
+          <h3 class="empty-title">No Matching Residences Found</h3>
+          <p class="empty-text">Try adjusting your filters or resetting the criteria to view our signature collection.</p>
+          <button type="button" class="btn btn-primary" id="emptyResetBtn">
+            <span>View All Residences</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive EMI / Mortgage Calculator Section -->
+    <section class="section calculator-section" id="calculator">
+      <div class="container">
+        <div class="section-header section-header--centered">
+          <span class="section-tag">Financial Precision</span>
+          <h2 class="section-title">
+            Investment &amp; <span class="text-gold">Mortgage Intelligence</span>
+          </h2>
+          <p class="section-subtitle">
+            Simulate your capital outlay with real-time financial mathematical modeling.
+          </p>
+        </div>
+
+        <div class="calculator-card">
+          <div class="calculator-inputs-pane">
+            <!-- Property Value Slider -->
+            <div class="calc-slider-block">
+              <div class="calc-label-row">
+                <label for="homeValueInput">Property Value ($)</label>
+                <span class="calc-val-display" id="homeValueDisplay">$8,500,000</span>
+              </div>
+              <input type="range" id="homeValueInput" min="1000000" max="40000000" step="250000" value="8500000" class="custom-range-slider">
+              <div class="range-limits">
+                <span>$1M</span>
+                <span>$40M+</span>
+              </div>
+            </div>
+
+            <!-- Down Payment Slider -->
+            <div class="calc-slider-block">
+              <div class="calc-label-row">
+                <label for="downPaymentInput">Down Payment (%)</label>
+                <span class="calc-val-display" id="downPaymentDisplay">20% ($1,700,000)</span>
+              </div>
+              <input type="range" id="downPaymentInput" min="10" max="60" step="5" value="20" class="custom-range-slider">
+              <div class="range-limits">
+                <span>10%</span>
+                <span>60%</span>
+              </div>
+            </div>
+
+            <!-- Interest Rate Slider -->
+            <div class="calc-slider-block">
+              <div class="calc-label-row">
+                <label for="interestRateInput">Annual Interest Rate (%)</label>
+                <span class="calc-val-display" id="interestRateDisplay">5.75%</span>
+              </div>
+              <input type="range" id="interestRateInput" min="2.5" max="11.0" step="0.25" value="5.75" class="custom-range-slider">
+              <div class="range-limits">
+                <span>2.5%</span>
+                <span>11.0%</span>
+              </div>
+            </div>
+
+            <!-- Loan Tenure Slider -->
+            <div class="calc-slider-block">
+              <div class="calc-label-row">
+                <label for="loanTenureInput">Loan Tenure (Years)</label>
+                <span class="calc-val-display" id="loanTenureDisplay">30 Years</span>
+              </div>
+              <input type="range" id="loanTenureInput" min="5" max="30" step="5" value="30" class="custom-range-slider">
+              <div class="range-limits">
+                <span>5 Yrs</span>
+                <span>30 Yrs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="calculator-results-pane">
+            <div class="results-header">
+              <span class="results-title-sub">ESTIMATED MONTHLY COMMITMENT</span>
+              <div class="results-primary-emi" id="monthlyEmiOutput">$39,698</div>
+              <span class="results-note">Principal & Interest combined</span>
+            </div>
+
+            <div class="breakdown-chart-bar">
+              <div class="breakdown-segment segment-principal" id="barPrincipalSegment"></div>
+              <div class="breakdown-segment segment-interest" id="barInterestSegment"></div>
+            </div>
+
+            <div class="breakdown-legend">
+              <div class="legend-item">
+                <span class="legend-color-dot dot-principal"></span>
+                <span class="legend-name">Principal Loan</span>
+                <span class="legend-figure" id="totalPrincipalOutput">$6,800,000</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color-dot dot-interest"></span>
+                <span class="legend-name">Total Interest</span>
+                <span class="legend-figure" id="totalInterestOutput">$7,491,280</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color-dot dot-total"></span>
+                <span class="legend-name">Total Repayment</span>
+                <span class="legend-figure text-gold" id="totalRepaymentOutput">$14,291,280</span>
+              </div>
+            </div>
+
+            <div class="calculator-cta">
+              <button type="button" class="btn btn-primary btn-block" id="calcApplyBtn">
+                <span>Request Financing Pre-Approval</span>
+                <i class="fa-solid fa-file-contract"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Consultation & Booking Section -->
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="contact-card">
+          <div class="contact-info-col">
+            <div class="badge-pill">
+              <i class="fa-solid fa-calendar-check"></i>
+              <span>Private Viewings</span>
+            </div>
+            <h2 class="contact-title">
+              Schedule Your <span class="gradient-text-gold">Private VIP Tour</span>
+            </h2>
+            <p class="contact-desc">
+              Whether via private air charter or immersive 3D spatial stream, our Senior Advisory partners provide discreet, comprehensive consultations.
+            </p>
+
+            <div class="contact-highlights">
+              <div class="contact-highlight-item">
+                <i class="fa-solid fa-shield-cat"></i>
+                <div>
+                  <strong>Strict NDA Protection</strong>
+                  <p>All inquiries are handled under rigorous confidential protocols.</p>
+                </div>
+              </div>
+              <div class="contact-highlight-item">
+                <i class="fa-solid fa-helicopter"></i>
+                <div>
+                  <strong>Executive Concierge</strong>
+                  <p>Helipad coordination and chauffeur arrivals for physical tours.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-col">
+            <form class="booking-form" id="bookingForm" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="visitorName">Full Legal Name *</label>
+                  <input type="text" id="visitorName" class="form-control" placeholder="e.g. Alexander Vance" required>
+                  <span class="form-feedback" id="feedbackName"></span>
+                </div>
+                <div class="form-group">
+                  <label for="visitorEmail">Direct Email *</label>
+                  <input type="email" id="visitorEmail" class="form-control" placeholder="e.g. alexander@vance.com" required>
+                  <span class="form-feedback" id="feedbackEmail"></span>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="visitorPhone">Contact Telephone *</label>
+                  <input type="tel" id="visitorPhone" class="form-control" placeholder="+1 (555) 000-0000" required>
+                  <span class="form-feedback" id="feedbackPhone"></span>
+                </div>
+                <div class="form-group">
+                  <label for="viewingType">Tour Preference</label>
+                  <select id="viewingType" class="form-control">
+                    <option value="interactive-3d">Private 3D Spatial VR Walkthrough</option>
+                    <option value="in-person">In-Person VIP Escorted Tour</option>
+                    <option value="architectural-review">Full Architectural & Investment Review</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="preferredDate">Preferred Date *</label>
+                  <input type="date" id="preferredDate" class="form-control" required>
+                  <span class="form-feedback" id="feedbackDate"></span>
+                </div>
+                <div class="form-group">
+                  <label for="propertyInterest">Residence of Interest</label>
+                  <select id="propertyInterest" class="form-control">
+                    <option value="General Luxury Portfolio">General Luxury Portfolio</option>
+                    <option value="The Horizon Monolith">The Horizon Monolith ($18.5M)</option>
+                    <option value="Aura Sky Penthouse">Aura Sky Penthouse ($14.2M)</option>
+                    <option value="Mirage Desert Sanctuary">Mirage Desert Sanctuary ($9.8M)</option>
+                    <option value="Alpine Glass Chalet">Alpine Glass Chalet ($12.4M)</option>
+                    <option value="Oceanfront Pavilion">Oceanfront Pavilion ($22.0M)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="visitorNotes">Bespoke Requirements / Advisory Notes</label>
+                <textarea id="visitorNotes" class="form-control" rows="3" placeholder="Specify any security protocols, custom floorplan needs, or portfolio considerations..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBookingBtn">
+                <span>Confirm VIP Consultation Request</span>
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Virtual Tour Modal -->
+  <div class="modal-overlay" id="tourModal" aria-hidden="true" aria-modal="true" role="dialog" aria-labelledby="modalPropertyTitle">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="section-tag" id="modalTag">Featured Estate</span>
+          <h3 class="modal-title" id="modalPropertyTitle">Residence Gallery</h3>
+        </div>
+        <button type="button" class="modal-close-btn" id="closeTourModalBtn" aria-label="Close Modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-featured-image-wrapper">
+          <img src="" alt="Property Preview" id="modalFeaturedImage" class="modal-featured-img">
+          <div class="modal-image-overlay">
+            <span class="modal-price" id="modalPropertyPrice">$0</span>
+            <span class="modal-location" id="modalPropertyLocation">Location</span>
+          </div>
+        </div>
+
+        <div class="modal-details-grid">
+          <div class="modal-detail-item">
+            <i class="fa-solid fa-bed"></i>
+            <span id="modalPropertyBeds">0 Beds</span>
+          </div>
+          <div class="modal-detail-item">
+            <i class="fa-solid fa-bath"></i>
+            <span id="modalPropertyBaths">0 Baths</span>
+          </div>
+          <div class="modal-detail-item">
+            <i class="fa-solid fa-ruler-combined"></i>
+            <span id="modalPropertyArea">0 Sq Ft</span>
+          </div>
+          <div class="modal-detail-item">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span id="modalPropertyYear">Built 2025</span>
+          </div>
+        </div>
+
+        <p class="modal-description" id="modalPropertyDescription">
+          Detailed architectural summary will be dynamically rendered here.
+        </p>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-primary" id="modalBookNowBtn">
+            <span>Book Private Walkthrough</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" id="modalExplore3DBtn">
+            <i class="fa-solid fa-cube"></i>
+            <span>Load in 3D Viewport</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Toast Feedback Message -->
+  <div class="toast-notification" id="toastNotification" role="alert" aria-live="polite">
+    <div class="toast-icon" id="toastIcon">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <div class="toast-body">
+      <p class="toast-title" id="toastTitle">Notification</p>
+      <p class="toast-message" id="toastMessage">Message content</p>
+    </div>
+    <button type="button" class="toast-close" id="toastCloseBtn" aria-label="Close Toast">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-brand-col">
+        <a href="#hero" class="brand-logo">
+          <span class="brand-glyph">
+            <i class="fa-solid fa-cube"></i>
+          </span>
+          <div class="brand-text">
+            <span class="brand-title">ESTATE<span class="text-gold">VISION</span></span>
+            <span class="brand-subtitle">3D Spatial Living</span>
+          </div>
+        </a>
+        <p class="footer-bio">
+          Next-generation real estate visual technology combining WebGL 3D architectural models, algorithmic mortgage modeling, and ultra-high-definition virtual walkthroughs.
+        </p>
+        <div class="footer-social-row">
+          <a href="#" class="social-link" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-link" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-links-col">
+        <h3 class="footer-col-title">Portfolio</h3>
+        <ul class="footer-link-list">
+          <li><a href="#properties">Modern Villas</a></li>
+          <li><a href="#properties">Sky Penthouses</a></li>
+          <li><a href="#properties">Alpine Chalets</a></li>
+          <li><a href="#properties">Private Islands</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h3 class="footer-col-title">Technology</h3>
+        <ul class="footer-link-list">
+          <li><a href="#hero">WebGL 3D Engine</a></li>
+          <li><a href="#architecture">Sustainable Materials</a></li>
+          <li><a href="#calculator">Mortgage Math Engine</a></li>
+          <li><a href="#hero">Spatial Day/Night Cycle</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h3 class="footer-col-title">Advisory Desk</h3>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>9450 Wilshire Blvd, Beverly Hills, CA</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-phone"></i>
+          <span>+1 (800) 847-4663</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <span>private@estatevision3d.luxury</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="container footer-bottom-inner">
+        <p class="copyright-text">
+          &copy; 2026 EstateVision 3D. Crafted by Md Anas Amin. All architectural rights reserved.
+        </p>
+        <div class="footer-legal-links">
+          <a href="#">Privacy Protocol</a>
+          <a href="#">Terms of Discretion</a>
+          <a href="#">Security Audit</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

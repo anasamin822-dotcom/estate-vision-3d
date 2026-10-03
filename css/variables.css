@@ -1,0 +1,185 @@
+/* EstateVision 3D — Kibori Design System
+   Extracted from KIBORI 木彫 (ThreeUI) by DesignCode.io
+   Dark Luxe: warm ash ground · ink cream type · terracotta fire accent
+   ──────────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  /* ── Surfaces — warm ash, not cold black ─────────────────────────────
+     Kibori ground: #0a0806 (≈ 10,8,6 — charcoal with amber tint)       */
+  --bg-void:         #060403;   /* deepest: under the floor              */
+  --bg-primary:      #0a0806;   /* main ground — warm ash                */
+  --bg-secondary:    #100c08;   /* elevated surface — dark timber        */
+  --bg-tertiary:     #181210;   /* card / panel ground                   */
+  --bg-card:         rgba(24, 18, 16, 0.84);
+  --bg-glass:        rgba(10, 8, 6, 0.72);
+  --bg-glass-heavy:  rgba(6, 4, 3, 0.92);
+  --bg-glass-card:   rgba(22, 16, 12, 0.56);
+  --bg-subtle:       rgba(242, 236, 226, 0.018);
+
+  /* ── Kibori Color Palette ─────────────────────────────────────────────
+     Sourced directly from kibori.html CSS custom properties              */
+  --ink:             #f2ece2;   /* warm parchment white — primary text   */
+  --ink-dim:         rgba(242, 236, 226, 0.62);  /* secondary text       */
+  --ink-muted:       rgba(242, 236, 226, 0.38);  /* tertiary / captions  */
+  --hair:            rgba(242, 236, 226, 0.18);  /* ultra-thin separator  */
+
+  /* Terracotta fire — Kibori's primary accent */
+  --terracotta:      #9d382c;
+  --terracotta-lit:  #b8432e;
+  --terracotta-dark: #812d23;
+  --terracotta-glow: rgba(157, 56, 44, 0.22);
+  --terracotta-dim:  rgba(157, 56, 44, 0.10);
+
+  /* Amber / gold — retained from EstateVision, re-warmed to Kibori tone */
+  --amber:           #dbad64;   /* Kibori's gold-hair / accent amber     */
+  --amber-lit:       #e8c080;
+  --amber-glow:      rgba(219, 173, 100, 0.20);
+  --amber-dim:       rgba(219, 173, 100, 0.10);
+
+  /* Seal red — Kibori's wax seal / stamp color */
+  --seal-red:        #a3392c;
+  --seal-bg:         #f6ead5;
+
+  /* Legacy aliases (kept so existing JS/CSS doesn't break) */
+  --accent-gold:        var(--amber);
+  --accent-gold-light:  var(--amber-lit);
+  --accent-gold-hover:  var(--amber-lit);
+  --accent-gold-dim:    var(--amber-dim);
+  --accent-gold-glow:   var(--amber-glow);
+  --accent-cyan:        #8bb8c8;  /* desaturated — not electric           */
+  --accent-cyan-glow:   rgba(139, 184, 200, 0.14);
+  --accent-emerald:     #6a9b7e;
+  --accent-rose:        var(--terracotta);
+
+  /* ── Typography Colors ───────────────────────────────────────────────*/
+  --text-primary:    var(--ink);
+  --text-secondary:  var(--ink-dim);
+  --text-tertiary:   var(--ink-muted);
+  --text-dim:        rgba(242, 236, 226, 0.28);
+  --text-inverse:    #0a0806;
+
+  /* ── Font Families — Kibori pairing ──────────────────────────────────
+     Display: Instrument Serif (editorial, Kyoto-luxe)
+     Body: Inter (clean, legible, functional)
+     Mono: system — not used decoratively                                 */
+  --font-serif:   'Instrument Serif', 'Palatino Linotype', Georgia, serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Legacy heading alias */
+  --font-heading: var(--font-serif);
+
+  /* ── Type Scale — unified 7-step scale (no arbitrary font sizes, min 12px) ──*/
+  --text-xs:    0.75rem;    /* 12px — badges, micro labels, tooltips (min 12px) */
+  --text-sm:    0.875rem;   /* 14px — secondary copy, inputs, table items, nav  */
+  --text-base:  1rem;       /* 16px — primary body copy                          */
+  --text-lg:    1.25rem;    /* 20px — card titles, subheadings                   */
+  --text-xl:    1.5rem;     /* 24px — metrics, modal titles                      */
+  --text-2xl:   2.25rem;    /* 36px — section headings                           */
+  --text-3xl:   3.5rem;     /* 56px — hero display                               */
+
+  /* ── Motion — Kibori spring system ───────────────────────────────────
+     Kibori uses: cubic-bezier(.2,.75,.2,1) for settle, .25s–.6s timing  */
+  --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);   /* overshoot  */
+  --ease-settle:     cubic-bezier(0.20, 0.75, 0.20, 1.0); /* Kibori std */
+  --ease-out-expo:   cubic-bezier(0.19, 1.00, 0.22, 1.0); /* snap decel */
+  --ease-out-circ:   cubic-bezier(0.075, 0.82, 0.165, 1); /* fluid      */
+  --ease-inout:      cubic-bezier(0.83, 0, 0.17, 1);       /* S-curve    */
+  --ease-linear:     linear;
+
+  /* Duration tokens */
+  --dur-instant: 0.10s;
+  --dur-fast:    0.18s;
+  --dur-normal:  0.28s;
+  --dur-slow:    0.45s;
+  --dur-cinematic: 0.6s;
+
+  /* Transition presets */
+  --transition-fast:   0.18s var(--ease-settle);
+  --transition-normal: 0.28s var(--ease-settle);
+  --transition-smooth: 0.45s var(--ease-settle);
+  --transition-spring: 0.52s var(--ease-spring);
+
+  /* ── Spatial Metrics ────────────────────────────────────────────────
+     Kibori uses very low-radius (1–2px buttons, 0 inputs) — minimal     */
+  --radius-xs:   2px;   /* Kibori: 1–2px on buttons/pills               */
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   12px;
+  --radius-xl:   20px;
+  --radius-pill: 2px;   /* Override — Kibori uses near-square corners    */
+
+  /* ── Control Metrics ─────────────────────────────────────────────────*/
+  --btn-height-sm:   34px;
+  --btn-height-base: 44px;
+  --btn-height-lg:   52px;
+  --btn-icon-size:   40px;
+
+  /* ── Elevations — Kibori: drop-shadow not box-shadow ─────────────────*/
+  --shadow-xs:    0 1px 3px rgba(0, 0, 0, 0.6);
+  --shadow-sm:    0 4px 16px rgba(0, 0, 0, 0.65);
+  --shadow-card:  0 20px 60px -10px rgba(0, 0, 0, 0.90);
+  --shadow-float: 0 32px 80px -16px rgba(4, 3, 2, 0.92);
+  --shadow-glow:  0 0 28px var(--terracotta-glow);
+  --shadow-amber: 0 0 28px var(--amber-glow);
+
+  /* ── Borders — hair-line language ───────────────────────────────────*/
+  --border-ghost:       rgba(242, 236, 226, 0.06);
+  --border-glass:       rgba(242, 236, 226, 0.10);
+  --border-glass-light: rgba(242, 236, 226, 0.16);
+  --border-glow:        rgba(219, 173, 100, 0.28);
+  --border-hair:        rgba(242, 236, 226, 0.18);  /* Kibori --hair     */
+
+  /* ── Layout ──────────────────────────────────────────────────────────*/
+  --container-max-width: 1360px;
+  --nav-height:           60px;   /* Kibori bar: 60px                    */
+  --section-gap:          7rem;
+}
+
+/* ── Light Mode Palette (Luxe Kyoto Alabaster & Hinoki Tone) ──────── */
+[data-theme="light"] {
+  --bg-void:         #f3ede3;
+  --bg-primary:      #faf8f5;   /* warm porcelain / alabaster        */
+  --bg-secondary:    #efe8dc;   /* elevated warm surface              */
+  --bg-tertiary:     #e5ddd0;   /* card / panel ground               */
+  --bg-card:         rgba(255, 255, 255, 0.92);
+  --bg-glass:        rgba(250, 248, 245, 0.90);
+  --bg-glass-heavy:  rgba(243, 237, 227, 0.96);
+  --bg-glass-card:   rgba(255, 255, 255, 0.78);
+  --bg-subtle:       rgba(24, 18, 14, 0.025);
+
+  --ink:             #18130f;   /* rich deep espresso charcoal       */
+  --ink-dim:         rgba(24, 19, 15, 0.82);
+  --ink-muted:       rgba(24, 19, 15, 0.62);
+  --hair:            rgba(24, 19, 15, 0.14);
+
+  --terracotta:      #a6392b;
+  --terracotta-lit:  #c04332;
+  --terracotta-dark: #8c2e22;
+  --terracotta-glow: rgba(166, 57, 43, 0.20);
+  --terracotta-dim:  rgba(166, 57, 43, 0.08);
+
+  --amber:           #b48128;   /* warm cognac gold                  */
+  --amber-lit:       #c99433;
+  --amber-glow:      rgba(180, 129, 40, 0.18);
+  --amber-dim:       rgba(180, 129, 40, 0.08);
+
+  --text-primary:    var(--ink);
+  --text-secondary:  var(--ink-dim);
+  --text-tertiary:   var(--ink-muted);
+  --text-dim:        rgba(24, 19, 15, 0.46);
+  --text-inverse:    #faf8f5;
+
+  --border-ghost:       rgba(24, 19, 15, 0.06);
+  --border-glass:       rgba(24, 19, 15, 0.09);
+  --border-glass-light: rgba(24, 19, 15, 0.14);
+  --border-glow:        rgba(180, 129, 40, 0.26);
+  --border-hair:        rgba(24, 19, 15, 0.14);
+
+  --shadow-xs:    0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-sm:    0 4px 14px rgba(0, 0, 0, 0.08);
+  --shadow-card:  0 16px 40px -8px rgba(0, 0, 0, 0.09);
+  --shadow-float: 0 24px 60px -12px rgba(0, 0, 0, 0.12);
+}

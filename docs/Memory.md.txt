@@ -1,0 +1,47 @@
+# Project Context & Progress Memory (`Memory.md`)
+
+## 1. Project Identity & Overview
+- **Project Name:** EstateVision 3D
+- **Objective:** High-impact, agency-grade real estate 3D landing page for developer portfolio.
+- **Developer:** Md Anas Amin
+- **Live Deployment URL:** https://developer-portfolio-khaki-nine.vercel.app/
+
+## 2. Tech Stack Mandate
+- **Core Stack:** HTML5, CSS3, Vanilla JavaScript (ES6+).
+- **3D & Animation Libraries (via CDN):** Three.js (r128+), GLTFLoader, OrbitControls, GSAP (3.12+), ScrollTrigger, FontAwesome 6.
+- **Styling Architecture:** Glassmorphism, Dark Luxe Obsidian Theme, Custom Shaders/Distortions, Responsive Grid/Flexbox.
+- **Separation:** Strict zero inline CSS/JS. External stylesheets in `css/`, modular scripts in `js/`.
+
+## 3. Phase Status Tracker
+- [x] **Phase 1: Environment Setup & Document Boilerplate**
+  - [x] Initialized folder structure (`assets/models/`, `assets/images/`, `assets/icons/`, `css/`, `js/`, `docs/`).
+  - [x] Created `index.html` with zero inline CSS/JS and semantic layout.
+  - [x] Created `css/variables.css` with 8-step type scale, button heights, and glow tokens.
+- [x] **Phase 2: Core Layout & HTML/CSS Component Styling**
+  - [x] Built Glassmorphism Navbar with live 3D engine status and mobile drawer.
+  - [x] Built Hero Section layout with 3D canvas viewport, HUD controls, and luxury metrics.
+  - [x] Built Architecture specs grid with organic card hover effects.
+  - [x] Built Dynamic Properties Showcase grid with search, dropdowns, and active tag pills.
+  - [x] Built Interactive EMI / Mortgage Calculator with real-time range sliders and bar visualization.
+  - [x] Built VIP Viewing Booking consultation form with validation and feedback states.
+  - [x] Built Virtual Tour Modal and Toast Notification components.
+  - [x] Resolved all 10 usability heuristic issues (type scale, unified buttons, title casing, slider affordance, high-contrast like button, aligned filter toolbar, modal close anchor).
+- [x] **Phase 3: Three.js 3D Scene Implementation**
+  - [x] Integrated `GLTFLoader` with real-time progress track sync and graceful fallback to procedural architectural geometry.
+  - [x] Implemented real-time 3D-to-2D screen-projected interactive hotspots anchored to architectural model features.
+  - [x] Added dynamic pool water shader shimmer and ACES Filmic tonemapping.
+  - [x] Added interactive camera focus animations when clicking architectural hotspots.
+  - [x] Day/Night environmental lighting transitions and wireframe mode.
+- [x] **Phase 4: Dynamic JavaScript Logic & Interactions**
+  - [x] Real-time mortgage math with reactive track gradient fills for sliders.
+  - [x] Dynamic client-side multi-filter engine (search, location, BHK, price) with event delegation.
+  - [x] Interactive 3D Card Tilt physics on mousemove across property and spec cards.
+  - [x] Fluid ambient glow mesh following cursor movements with lerp inertia.
+  - [x] Animated statistics counters for metrics strip.
+- [x] **Phase 5: GSAP Animations & Polish**
+  - [x] GSAP ScrollTrigger 3D model rotation and vertical sync during scroll.
+  - [x] Cohesive stagger reveals for cards and sections.
+
+## 4. Current State & Verification
+- **Local Server:** Running on `http://localhost:8080/index.html`.
+- **Status:** All Phase 1, 2, 3, 4 & 5 enhancements complete, verified, and serving with 200 OK.
