@@ -242,7 +242,7 @@ scripts/                  # Utility scripts
 
 | Usage | Quality |
 |-------|---------|
-| 0-30% | **PEAK** — Comprehensive, thorough work |
+| 0-30% | **PEAK** — Thorough, complete work |
 | 30-50% | **GOOD** — Solid, confident output |
 | 50-70% | **DEGRADING** — Efficiency mode |
 | 70%+ | **POOR** — Rushed, incomplete |

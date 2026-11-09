@@ -131,7 +131,7 @@ Every sentence should convey information. Remove words that don't add meaning.
 
 | Context Usage | Quality |
 |---------------|---------|
-| 0-30% | PEAK — Thorough, comprehensive |
+| 0-30% | PEAK — Thorough, complete |
 | 30-50% | GOOD — Confident, solid work |
 | 50-70% | DEGRADING — Efficiency mode begins |
 | 70%+ | POOR — Rushed, minimal |

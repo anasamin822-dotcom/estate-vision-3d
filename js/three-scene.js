@@ -1,7 +1,7 @@
 /**
  * EstateVision 3D - Advanced Three.js Spatial Engine (Phase 3 & 4)
  * Features:
- * - GLTFLoader with progress tracking & robust procedural fallback
+ * - GLTFLoader with progress tracking & solid procedural fallback
  * - Real-time 3D-to-2D screen projected interactive hotspots
  * - Dynamic pool water shader animation
  * - Day/Night environmental simulation with ACES Filmic tonemapping
